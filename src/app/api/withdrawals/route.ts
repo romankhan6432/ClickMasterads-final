@@ -315,6 +315,11 @@ export async function PUT(req: Request) {
                 $inc: { balance: withdrawal.amount }
             });
         }
+   
+
+ 
+
+
 
         return NextResponse.json({
             message: `Withdrawal ${status} successfully`,
