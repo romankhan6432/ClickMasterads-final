@@ -1,0 +1,84 @@
+import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+
+
+export async function GET() {
+    try {
+        const session = await getServerSession(authOptions);
+        
+        if (!session) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
+
+        // Fetch additional user data from database
+        const userData = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                status: true,
+                lastLogin: true,
+                createdAt: true,
+                profile: {
+                    select: {
+                        avatar: true,
+                        balance: true,
+                        points: true,
+                        level: true
+                    }
+                }
+            }
+        });
+
+        if (!userData) {
+            return NextResponse.json(
+                { error: 'User not found' },
+                { status: 404 }
+            );
+        }
+
+        // Get maintenance status from database or configuration
+        const maintenanceStatus = await prisma.maintenance.findFirst({
+            where: { isActive: true },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        // Return the enhanced user page model data
+        return NextResponse.json({
+            maintenance: {
+                isActive: maintenanceStatus?.isActive || false,
+                progress: maintenanceStatus?.progress || 0,
+                estimatedTime: maintenanceStatus?.estimatedTime || '30 minutes',
+                currentTime: new Date().toISOString(),
+                isAnimating: maintenanceStatus?.isActive || false,
+                message: maintenanceStatus?.message || 'System is running normally'
+            },
+            user: {
+                ...userData,
+                profile: userData.profile || {
+                    avatar: null,
+                    balance: 0,
+                    points: 0,
+                    level: 1
+                }
+            },
+            system: {
+                version: process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0',
+                environment: process.env.NODE_ENV,
+                lastUpdate: new Date().toISOString()
+            }
+        });
+    } catch (error) {
+        console.error('Error in page-model API:', error);
+        return NextResponse.json(
+            { error: 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
+} 

@@ -1,0 +1,28 @@
+{
+    "welcome": "Regardez des publicités et gagnez de l'argent",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "navigation": {
+        "watchAd": "Regarder la publicité",
+        "stopAutoAds": "Arrêter les publicités automatiques",
+        "startAutoAds": "Démarrer les publicités automatiques",
+        "nextAdIn": "Prochaine publicité dans",
+        "ads": "Publicités",
+        "dailyProgress": "Progression quotidienne",
+        "untilNextReset": "Jusqu'à la prochaine réinitialisation",
+        "days": "Jours",
+        "hours": "Heures",
+        "minutes": "Minutes",
+        "seconds": "Secondes",
+        "balance": "Votre solde actuel. Regardez plus de publicités pour l'augmenter !",
+        "available": {
+            "balance": "Solde disponible"
+        },
+        "watchAds": {
+            "age": "Avez-vous plus de 18 ans ?",
+            "description": "Les liens ci-dessous contiennent du contenu réservé aux adultes. Veuillez confirmer que vous avez plus de 18 ans pour continuer.",
+            "noLinks": "Aucun lien disponible",
+            "title": "🎯 Regardez la publicité en entier pour recevoir votre récompense"
+        }
+    }
+}

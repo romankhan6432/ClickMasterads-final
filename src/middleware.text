@@ -1,0 +1,111 @@
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { match as matchLocale } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
+import { withAuth } from "next-auth/middleware"
+
+const locales = ['en', 'bn', 'hi', 'es']
+const defaultLocale = 'en'
+
+// Public paths that don't require authentication
+const publicPaths = [
+  '/login',
+  '/register',
+  '/about',
+  '/terms',
+  '/privacy',
+  '/admin/auth',
+]
+
+function getLocale(request: NextRequest): string {
+  const negotiatorHeaders: Record<string, string> = {}
+  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
+
+  // @ts-ignore locales are readonly
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+  const locales = ['en', 'bn', 'hi', 'es']
+  
+  try {
+    const locale = matchLocale(languages, locales, defaultLocale)
+    return locale
+  } catch (e) {
+    return defaultLocale
+  }
+}
+
+// Admin middleware with NextAuth
+export const adminMiddleware = withAuth(
+  function middleware(req) {
+    return NextResponse.next()
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => token?.role === "admin",
+    }
+  }
+) as (request: NextRequest) => Promise<NextResponse>
+
+// Main middleware function
+export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+
+  // Skip middleware for NextAuth API routes
+  if (pathname.startsWith('/api/auth')) {
+    return NextResponse.next()
+  }
+
+  // Handle admin routes with NextAuth
+  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/auth')) {
+    return adminMiddleware(request)
+  }
+
+  const pathnameIsMissingLocale = locales.every(
+    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+  )
+
+  // Exclude public files and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    /\.(.*)$/.test(pathname)
+  ) {
+    return NextResponse.next()
+  }
+
+  // Handle locale routing
+  if (pathnameIsMissingLocale) {
+    const locale = getLocale(request)
+    return NextResponse.redirect(
+      new URL(
+        `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+        request.url
+      )
+    )
+  }
+
+  // Handle 404 pages while preserving locale
+  if (pathname.endsWith('/404')) {
+    const locale = pathname.split('/')[1] || defaultLocale
+    return NextResponse.rewrite(new URL(`/${locale}/404`, request.url))
+  }
+
+  // Check if the path is public
+  const isPublicPath = publicPaths.some(path => 
+    pathname.includes(path) || pathname === '/'
+  )
+
+  if (isPublicPath) {
+    return NextResponse.next()
+  }
+
+  // For protected routes, let NextAuth handle the authentication
+  return NextResponse.next()
+}
+
+// Configure middleware matchers
+export const config = {
+  matcher: [
+    // Skip public files
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
+}
