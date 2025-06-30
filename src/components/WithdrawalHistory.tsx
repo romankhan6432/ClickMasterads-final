@@ -27,7 +27,7 @@ interface WithdrawalRecord {
   amount: number;
   bdtAmount: number;
   method: string;
-  status: 'pending' | 'completed' | 'failed';
+  status: 'pending' | 'approved' | 'failed';
   metadata?: {
     network?: string;
     address?: string;
@@ -111,11 +111,11 @@ const WithdrawalDetails = ({ isOpen, onClose, withdrawal }: WithdrawalDetailsPro
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className={`p-2 rounded-lg ${
-                          withdrawal.status === 'completed' ? 'bg-[#02C076]/10' :
+                          withdrawal.status === 'approved' ? 'bg-[#02C076]/10' :
                           withdrawal.status === 'failed' ? 'bg-[#CD6D6D]/10' :
                           'bg-[#F0B90B]/10'
                         }`}>
-                          {withdrawal.status === 'completed' ? (
+                          {withdrawal.status === 'approved' ? (
                             <CheckCircleIcon className="h-6 w-6 text-[#02C076]" />
                           ) : withdrawal.status === 'failed' ? (
                             <XCircleIcon className="h-6 w-6 text-[#CD6D6D]" />
@@ -125,7 +125,7 @@ const WithdrawalDetails = ({ isOpen, onClose, withdrawal }: WithdrawalDetailsPro
                         </div>
                         <div>
                           <div className="text-[#EAECEF] font-medium">
-                            {withdrawal.status === 'completed' ? 'Completed' :
+                            {withdrawal.status === 'approved' ? 'Approved' :
                              withdrawal.status === 'failed' ? 'Failed' :
                              'Processing'}
                           </div>
@@ -138,7 +138,7 @@ const WithdrawalDetails = ({ isOpen, onClose, withdrawal }: WithdrawalDetailsPro
                         <div className="text-[#EAECEF] font-medium">
                           {displayAmount} {currency}
                         </div>
-                        {withdrawal.status === 'completed' && (
+                        {withdrawal.status === 'approved' && (
                           <div className="text-sm text-[#02C076]">
                             Successful
                           </div>
@@ -306,11 +306,11 @@ export default function WithdrawalHistory({ isOpen, onClose }: WithdrawalHistory
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-3">
                                 <div className={`p-2 rounded-lg ${
-                                  withdrawal.status === 'completed' ? 'bg-[#02C076]/10' :
+                                  withdrawal.status === 'approved' ? 'bg-[#02C076]/10' :
                                   withdrawal.status === 'failed' ? 'bg-[#CD6D6D]/10' :
                                   'bg-[#F0B90B]/10'
                                 }`}>
-                                  {withdrawal.status === 'completed' ? (
+                                  {withdrawal.status === 'approved' ? (
                                     <CheckCircleIcon className="h-5 w-5 text-[#02C076]" />
                                   ) : withdrawal.status === 'failed' ? (
                                     <XCircleIcon className="h-5 w-5 text-[#CD6D6D]" />
@@ -328,7 +328,7 @@ export default function WithdrawalHistory({ isOpen, onClose }: WithdrawalHistory
                                 </div>
                               </div>
                               <div className={`text-sm ${
-                                withdrawal.status === 'completed' ? 'text-[#02C076]' :
+                                withdrawal.status === 'approved' ? 'text-[#02C076]' :
                                 withdrawal.status === 'failed' ? 'text-[#CD6D6D]' :
                                 'text-[#F0B90B]'
                               }`}>

@@ -515,7 +515,7 @@ const WithdrawalModal = ({ isOpen, onClose }: WithdrawalModalProps) => {
                         </div>
                         
                       </div>
-                      <div className="text-green-500 font-medium my-2">withdraw now off for 30 Day</div>
+                      <div className="text-green-500 font-medium my-2">withdraw 500 BDT</div>
 
                     </form>
                   </div>
