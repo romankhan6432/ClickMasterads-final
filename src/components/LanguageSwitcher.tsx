@@ -10,7 +10,8 @@ const getFlagEmoji = (locale: string) => {
     en: '🇺🇸',
     bn: '🇧🇩',
     hi: '🇮🇳',
-    es: '🇪🇸'
+    es: '🇪🇸',
+    ar: '🇸🇦'
   };
   return flags[locale] || '🌐';
 };
@@ -67,7 +68,7 @@ export default function LanguageSwitcher() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-[#162036] border border-[#1B2B4B] ring-1 ring-black ring-opacity-5 transform opacity-100 scale-100 transition-all duration-200 z-50">
           <div className="py-1" role="menu" aria-orientation="vertical">
-            {['en', 'bn', 'hi', 'es'].map((locale) => (
+            {['en', 'bn', 'hi', 'es', 'ar'].map((locale) => (
               <button
                 key={locale}
                 onClick={() => handleLanguageChange(locale)}
@@ -79,7 +80,8 @@ export default function LanguageSwitcher() {
                   <span className="font-medium">{locale === 'en' ? 'English' :
                     locale === 'bn' ? 'Bengali' :
                       locale === 'hi' ? 'Hindi' :
-                        locale === 'es' ? 'Spanish' : locale.toUpperCase()}</span>
+                        locale === 'es' ? 'Spanish' :
+                          locale === 'ar' ? 'Arabic' : locale.toUpperCase()}</span>
                 </div>
               </button>
             ))}

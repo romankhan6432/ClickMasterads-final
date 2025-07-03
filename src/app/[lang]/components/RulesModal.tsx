@@ -43,7 +43,7 @@ export default function RulesModal({
             'Achievement rewards available'
         ],
         withdrawals: [
-            'Minimum withdrawal: $10',
+           
             'Processed within 24 hours',
             'Verified account required',
             'Multiple payment methods',

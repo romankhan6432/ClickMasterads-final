@@ -53,6 +53,14 @@ export default function Home() {
         dispatch(loadSettings())
    }, [dispatch])
 
+    useEffect(() => {
+       const preferred = localStorage.getItem('preferredLanguage');
+       const current = window.location.pathname.split('/')[1];
+       if (preferred && preferred !== current) {
+         window.location.pathname = `/${preferred}${window.location.pathname.slice(current.length + 1)}`;
+       }
+     }, []);
+
 
     if (status === 'unauthenticated') {
         router.push('/auth');
@@ -239,13 +247,15 @@ export default function Home() {
             </main>
            
             {/* Bottom Navigation */}
-            <BottomNavigation
-                onWithdraw={() => setIsWithdrawalModalOpen(true)}
-                onTopEarners={() => setIsTopEarnersModalOpen(true)}
-                onAbout={() => setIsAboutModalOpen(true)}
-                onSupport={() => setIsReferralModalOpen(true)}
-                onNotice={() => setIsNoticeModalOpen(true)}
-            />
+            {!isReferralModalOpen && (
+                <BottomNavigation
+                    onWithdraw={() => setIsWithdrawalModalOpen(true)}
+                    onTopEarners={() => setIsTopEarnersModalOpen(true)}
+                    onAbout={() => setIsAboutModalOpen(true)}
+                    onSupport={() => setIsReferralModalOpen(true)}
+                    onNotice={() => setIsNoticeModalOpen(true)}
+                />
+            )}
 
             {/* Modals */}
             <TopEarnersModal
@@ -259,19 +269,19 @@ export default function Home() {
                 isOpen={isAboutModalOpen}
                 onClose={() => setIsAboutModalOpen(false)}
                 dictionary={{
-                    about: 'About ClickMaster',
-                    close: 'Close',
-                    welcome: 'Welcome to ClickMaster',
-                    description: 'Your trusted platform for earning rewards by watching ads',
-                    features: 'Features',
-                    howItWorks: 'How It Works',
-                    support: 'Support',
-                    version: 'Version',
-                    rules: 'Rules & Guidelines',
-                    general: 'General Rules',
-                    earnings: 'Earnings',
-                    withdrawals: 'Withdrawals',
-                    safety: 'Safety & Security'
+                    about: t('about'),
+                    close: t('close'),
+                    welcome: t('welcome'),
+                    description: t('description'),
+                    features: t('features'),
+                    howItWorks: t('howItWorks'),
+                    support: t('support'),
+                    version: t('version'),
+                    rules: t('rules'),
+                    general: t('general'),
+                    earnings: t('earnings'),
+                    withdrawals: t('withdrawals'),
+                    safety: t('safety')
                 }}
             />
 

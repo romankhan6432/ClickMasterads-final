@@ -115,7 +115,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
 
     return (
         <div className="fixed inset-0 z-50 bg-gray-900 md:bg-black/50 md:backdrop-blur-sm md:p-4 md:flex md:items-center md:justify-center">
-            <div className="relative h-full md:h-auto w-full md:max-w-md md:rounded-2xl md:border md:border-gray-800 bg-gray-900 shadow-xl overflow-hidden">
+            <div className="relative h-full md:h-auto w-full md:max-w-md md:rounded-2xl md:border md:border-gray-800 bg-gray-900 shadow-xl overflow-hidden mb-50">
                 {/* Header - Telegram Mini App style */}
                 <div className="sticky top-0 z-10 p-4 border-b border-gray-800 bg-gradient-to-r from-blue-500 to-blue-600">
                     <div className="flex items-center justify-between">
@@ -313,7 +313,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
                     ) : (
                         <div className="space-y-4">
                             {/* Total Commission Earnings Card */}
-                            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
+                            <div className="bg-gray-800/30 rounded-xl p-16 border border-gray-700/50">
                                 <div className="flex justify-between items-center">
                                     <div className="text-white">
                                         <div className="text-sm text-gray-400">{t('referral.totalCommission')}</div>
