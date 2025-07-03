@@ -36,9 +36,18 @@ export default function Home() {
     const router = useRouter();
     const params = useParams();
 
+
+
+///DailyProgress  api/ads/route.ts
+
     const { t } = useTranslation();
     const { data: session, status } : any = useSession();
     const { user } = useSelector((state : RootState) => state.public.auth)
+    const DAILY_AD_LIMIT = 300;
+
+
+
+
 
     useEffect(() =>{
         dispatch(loadSettings())
@@ -75,6 +84,10 @@ export default function Home() {
         let timer: NodeJS.Timeout;
 
         if (autoShowAds && !isLoading) {
+            if (Number(user?.adsWatched) >= DAILY_AD_LIMIT) {
+                setAutoShowAds(false);
+                return;
+            }
             if (countdown > 0) {
                 timer = setTimeout(() => setCountdown(prev => prev - 1), 1000);
             } else {
@@ -101,7 +114,7 @@ export default function Home() {
         return () => {
             if (timer) clearTimeout(timer);
         };
-    }, [autoShowAds, countdown, isLoading, dispatch]);
+    }, [autoShowAds, countdown, isLoading, dispatch, user?.adsWatched]);
 
    
 
@@ -185,7 +198,7 @@ export default function Home() {
                     <div className="flex flex-col items-center gap-4">
                         <button
                             onClick={handleWatchAd}
-                             disabled={ Number(user?.adsWatched) >= 500}
+                             disabled={ Number(user?.adsWatched) >= DAILY_AD_LIMIT}
                             className="relative overflow-hidden group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transform transition-all duration-300 ease-in-out hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <div className="absolute inset-0 bg-white/20 group-hover:bg-white/30 transition-all duration-300"></div>
@@ -209,7 +222,7 @@ export default function Home() {
                                     ? 'bg-red-500 hover:bg-red-600'
                                     : 'bg-green-500 hover:bg-green-600'
                                     } transition-colors duration-300`}
-                                    disabled={ Number(user?.adsWatched) >= 500}
+                                    disabled={ Number(user?.adsWatched) >= DAILY_AD_LIMIT}
                             >
                                 {autoShowAds ? t('navigation.stopAutoAds') : t('navigation.startAutoAds')}
                             </button>

@@ -64,7 +64,10 @@ export default function DirectLinks() {
     const telegramInitData = useSelector((state: RootState) => state.public.auth.telegramInitData);
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const DAILY_AD_LIMIT = 300;
 
+
+    
     // Function to generate hash matching backend logic
     function generateHash(id: string, timestamp: number) {
         const secret = 'secret'; // Must match process.env.HASH_SECRET on backend!
@@ -137,6 +140,7 @@ export default function DirectLinks() {
 
 
     const linkButtons = useMemo(() => {
+        const dailyLimitReached = Number(user?.adsWatched) >= DAILY_AD_LIMIT;
         return links.map(link => {
             const isLocked = lockedButtons[link._id] !== undefined;
             const countdown = lockedButtons[link._id];
@@ -145,11 +149,11 @@ export default function DirectLinks() {
                     key={link._id}
                     variants={item}
                     onClick={() => handleClick(link)}
-                    className={`group relative flex items-center justify-center w-full h-16 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${isLocked ? 'opacity-60 cursor-not-allowed' : ''}`}
+                    className={`group relative flex items-center justify-center w-full h-16 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${(isLocked || dailyLimitReached) ? 'opacity-60 cursor-not-allowed' : ''}`}
                     style={{
                         background: `linear-gradient(to right, var(--tw-gradient-from- , var(--tw-gradient-to- ))`
                     }}
-                    disabled={isLocked}
+                    disabled={isLocked || dailyLimitReached}
                 >
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                     <div className="flex items-center space-x-2 relative z-10">
@@ -157,13 +161,13 @@ export default function DirectLinks() {
                             {link.icon}
                         </span>
                         <span className="text-sm sm:text-base font-bold text-white group-hover:text-opacity-90">
-                            {isLocked ? `Locked: ${countdown}s` : link.title}
+                            {isLocked ? `Locked: ${countdown}s` : dailyLimitReached ? 'Daily Limit Reached' : link.title}
                         </span>
                     </div>
                 </motion.button>
             );
         });
-    }, [links, handleClick, lockedButtons]);
+    }, [links, handleClick, lockedButtons, user?.adsWatched]);
 
  
     return (

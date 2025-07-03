@@ -81,7 +81,7 @@ export async function POST(request: Request) {
             
             // Update user stats
             user.adsWatched = (user.adsWatched || 0) + 1;
-            user.balance = (user.balance || 0) + 0.001; // Add 0.01 for each ad view
+            user.balance = (user.balance || 0) + 0.001; // Add 0.001 for each ad view
             user.lastWatchTime = now;
             await user.save();
 

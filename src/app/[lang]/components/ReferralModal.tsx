@@ -77,7 +77,7 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
 
   
     
-     const referralBonus = 5; // 5% bonus
+     const referralBonus = 1; // 1% bonus
 
     const copyToClipboard = async (text: string, type: 'link' | 'code') => {
         try {
@@ -198,24 +198,10 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
                                 </div>
                             </div>
 
-                            {/* Referral Code - Telegram Mini App style */}
-                            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
-                                <h3 className="text-lg font-semibold text-white mb-3">{t('referral.yourCode')}</h3>
-                                <div className="flex items-center gap-2">
-                                    <div className="flex-1 bg-gray-700/50 text-white px-3 py-2 rounded-lg text-sm font-mono text-center">
-                                        {(user as UserWithReferral)?.referralCode}
-                                    </div>
-                                    <button
-                                        onClick={() => copyToClipboard((user as UserWithReferral)?.referralCode || '', 'code')}
-                                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all active:scale-95"
-                                    >
-                                        {copied ? t('referral.copied') : t('referral.copy')}
-                                    </button>
-                                </div>
-                            </div>
 
-                            {/* Referral Link - Telegram Mini App style */}
-                            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
+
+  {/* Referral Link - Telegram Mini App style */}
+  <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
                                 <h3 className="text-lg font-semibold text-white mb-3">{t('referral.yourLink')}</h3>
                                 <div className="flex items-center gap-2">
                                     <input
@@ -232,6 +218,26 @@ export default function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
                                     </button>
                                 </div>
                             </div>
+
+
+
+                            {/* Referral Code - Telegram Mini App style */}
+                            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">
+                                <h3 className="text-lg font-semibold text-white mb-3">{t('referral.yourCode')}</h3>
+                                <div className="flex items-center gap-2">
+                                    <div className="flex-1 bg-gray-700/50 text-white px-3 py-2 rounded-lg text-sm font-mono text-center">
+                                        {(user as UserWithReferral)?.referralCode}
+                                    </div>
+                                    <button
+                                        onClick={() => copyToClipboard((user as UserWithReferral)?.referralCode || '', 'code')}
+                                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all active:scale-95"
+                                    >
+                                        {copied ? t('referral.copied') : t('referral.copy')}
+                                    </button>
+                                </div>
+                            </div>
+
+                          
 
                             {/* Share Buttons - Telegram Mini App style */}
                             <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/50">

@@ -22,13 +22,24 @@ const directLinkSchema = new mongoose.Schema({
         type: String, 
         required: true,
     },
+
+
+
+
+
     rewardPerClick: {
         type: Number,
-        default: 0.01,
+        default: 0.001,
         min: 0,
         get: (v: number) => Number(v.toFixed(3)),
         set: (v: number) => Number(v.toFixed(3))
     },
+
+
+
+
+
+    
     totalEarnings: {
         type: Number,
         default: 0,

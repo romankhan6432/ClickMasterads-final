@@ -49,7 +49,7 @@ export default function DirectLinkPage() {
   const [formData, setFormData] = useState({
     url: '',
     title: '',
-    rewardPerClick: 0.01,
+    rewardPerClick: 0.001,
   });
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function DirectLinkPage() {
         },
       });
       setShowCreateModal(false);
-      setFormData({ url: '', title: '', rewardPerClick: 0.01 });
+      setFormData({ url: '', title: '', rewardPerClick: 0.001 });
       fetchLinks();
       toast.success('Link created successfully');
     } catch (error) {
@@ -411,7 +411,7 @@ export default function DirectLinkPage() {
                     : setFormData({ ...formData, rewardPerClick: parseFloat(e.target.value) })
                   }
                   className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-                  placeholder="0.01"
+                  placeholder="0.001"
                 />
               </div>
               {editingLink && (
@@ -435,7 +435,7 @@ export default function DirectLinkPage() {
                   onClick={() => {
                     setShowCreateModal(false);
                     setEditingLink(null);
-                    setFormData({ url: '', title: '', rewardPerClick: 0.01 });
+                    setFormData({ url: '', title: '', rewardPerClick: 0.001 });
                   }}
                   className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-gray-500"
                 >

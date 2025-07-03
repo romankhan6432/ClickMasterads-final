@@ -25,6 +25,23 @@ export async function POST(request: Request) {
       return NextResponse.json(errorResponse, { status: 404 });
     }
 
+
+
+
+
+
+
+    // Enforce daily ad limit
+    const DAILY_AD_LIMIT = 300;
+    if (user.adsWatched >= DAILY_AD_LIMIT) {
+      const errorResponse = { error: `Daily ad limit of ${DAILY_AD_LIMIT} reached`, status: 429 };
+      handleApiError(errorResponse);
+      return NextResponse.json(errorResponse, { status: 429 });
+    }
+
+
+
+    
     // Check if enough time has passed since last ad (15 seconds)
     const now = new Date();
     if (user.lastWatchTime && now.getTime() - user.lastWatchTime.getTime() < 15000) {
@@ -57,7 +74,7 @@ export async function POST(request: Request) {
     if (user.referredBy) {
       const referrer = await User.findById(user.referredBy);
       if (referrer) {
-        const commission = reward * 0.05; // 5% commission
+        const commission = reward * 0.01; // 1% commission
         referrer.balance += commission;
         referrer.totalEarnings += commission;
         await referrer.save();

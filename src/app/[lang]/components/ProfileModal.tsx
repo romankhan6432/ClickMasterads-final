@@ -43,6 +43,8 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     if (!isOpen) return null;
 
     return (
+
+        
         <div className="fixed inset-0 z-50 bg-gray-900 md:bg-black/50 md:backdrop-blur-sm md:p-4 md:flex md:items-center md:justify-center">
             <div className="relative h-full md:h-auto w-full md:max-w-sm md:rounded-2xl md:border md:border-gray-800 bg-gray-900 shadow-xl overflow-hidden">
                 {/* Header */}
@@ -73,6 +75,25 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                         </div>
                     </div>
                 </div>
+
+
+
+ {/* Logout Button */}
+ <div className="mt-4 flex justify-center">
+                        <button
+                            onClick={() => signOut()}
+                            className="py-2 px-3 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors flex items-center justify-center gap-2 font-medium text-lg"
+                            style={{ width: '200px' }}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            { t('logout') || "Log Out" }
+                        </button>
+                    </div>   
+
+
+                    
 
                 {/* Join Date */}
                 {/* Profile Content */}
@@ -182,18 +203,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                         {t('joinDate')}: {user?.createdAt}
                     </div>
 
-                    {/* Logout Button */}
-                    <div className="mt-4">
-                        <button
-                            onClick={() => signOut()}
-                            className="w-full py-3 px-4 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl transition-colors flex items-center justify-center gap-2 font-medium"
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            { t('logout') }
-                        </button>
-                    </div>   
+                   
 
 
 

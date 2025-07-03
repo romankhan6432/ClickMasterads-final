@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { url, title } = await req.json();
+    const { url, title, rewardPerClick } = await req.json();
 
     if (!url) {
       return NextResponse.json(
@@ -77,6 +77,7 @@ export async function POST(req: Request) {
       title: title || url,
       status: 'active',
       clicks: 0,
+      rewardPerClick: typeof rewardPerClick === 'number' ? rewardPerClick : 0.001,
     });
  
 
@@ -106,7 +107,7 @@ export async function PUT(req: Request) {
       );
     }
 
-    const { id, url, title, status } = await req.json();
+    const { id, url, title, status, rewardPerClick } = await req.json();
 
     if (!id) {
       return NextResponse.json(
@@ -132,6 +133,7 @@ export async function PUT(req: Request) {
     if (url) updateData.url = url;
     if (title) updateData.title = title;
     if (status) updateData.status = status;
+    if (typeof rewardPerClick === 'number') updateData.rewardPerClick = rewardPerClick;
 
     const updatedLink = await DirectLink.findByIdAndUpdate(
       id,

@@ -18,7 +18,8 @@ export default function DailyProgress() {
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const { user } = useSelector((state: RootState) => state.public.auth);
     const adsWatched = user?.adsWatched || 0
-    const progress = Math.min((adsWatched / 500) * 100, 100);
+    const DAILY_AD_LIMIT = 300;
+    const progress = Math.min((adsWatched / DAILY_AD_LIMIT) * 100, 100);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -59,7 +60,7 @@ export default function DailyProgress() {
             <div className="flex justify-between items-center mb-2">
                 <div className="text-sm text-gray-400">  {t('navigation.dailyProgress')} </div>
                 <div className="text-sm text-emerald-400">
-                    {adsWatched}/{ 500}  {t('navigation.ads')}
+                    {adsWatched}/{DAILY_AD_LIMIT}  {t('navigation.ads')}
                 </div>
             </div>
             <div className="h-2 bg-gray-700 rounded-full overflow-hidden mb-3">
@@ -69,7 +70,7 @@ export default function DailyProgress() {
                 />
             </div>
             <div className="text-center">
-                {adsWatched >= 500 && (
+                {adsWatched >= DAILY_AD_LIMIT && (
                     <div className="text-red-400 font-bold mb-2 animate-pulse">
                         Daily Limit Reached!
                     </div>
