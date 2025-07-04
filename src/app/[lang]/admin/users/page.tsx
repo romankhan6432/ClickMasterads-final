@@ -22,7 +22,7 @@ import { API_CALL } from '@/lib/client';
 
 import { message } from 'antd';
 import UserDetailsModal from '../../components/modals/UserDetailsModal';
-import AdminLayout from '../layout';
+
 
 interface User {
   _id: string;
@@ -155,7 +155,7 @@ export default function UsersPage() {
 
   return (
 
-    <AdminLayout>
+  <>
       {/* Header */}
       <div className="flex justify-between items-center mb-8 bg-gray-900 p-6 rounded-2xl shadow-lg border border-gray-800">
         <h1 className="text-2xl font-bold text-gray-100 flex items-center">
@@ -354,6 +354,6 @@ export default function UsersPage() {
         user={selectedUser}
         onUserUpdate={handleUserUpdate}
       />
-    </AdminLayout>
+   </>
   );
 }

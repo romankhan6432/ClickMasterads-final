@@ -18,7 +18,6 @@ import { useDispatch } from 'react-redux';
 import { selectAdminStats, selectRecentActivities, selectAdminLoading } from '@/modules/private/admin/selectors';
 import { fetchAdminStats, fetchRecentActivities } from '@/modules/private/admin/actions';
 import { useSelector } from 'react-redux';
-import AdminLayout from './layout';
 
 
 export default function AdminPage() {
@@ -41,8 +40,7 @@ export default function AdminPage() {
   };
 
   return (
-
-    <AdminLayout>
+    <>
       <div className="flex justify-between items-center mb-8 bg-gray-900 p-6 rounded-2xl shadow-lg border border-gray-800 transition-all duration-300">
         <h1 className="text-2xl font-bold text-gray-100 flex items-center">
           <DashboardOutlined className="mr-3 text-blue-400" />
@@ -174,7 +172,6 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
-    </AdminLayout>
-
+    </>
   );
 }

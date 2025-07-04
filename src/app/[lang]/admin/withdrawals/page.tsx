@@ -20,13 +20,14 @@ import {
 import { API_CALL } from '@/lib/client';
 import { Table, Button, Tag, Tooltip } from 'antd';
 import 'antd/dist/reset.css';
-import AdminLayout from '../layout';
+
 
 interface Withdrawal {
   _id: string;
   userId?: {
     email?: string;
     username?: string;
+    telegramUsername?: string;
   };
   telegramId?: string;
   activityType?: string;
@@ -221,11 +222,11 @@ export default function WithdrawalsPage() {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-10 gap-4 bg-gradient-to-br from-[#181A20] to-[#23272F] p-8 rounded-3xl shadow-2xl border border-[#262A35]">
         <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
-          <WalletOutlined className="text-yellow-400 text-3xl" />
-          Withdrawals <span className="text-lg font-light text-[#C0C0C0] ml-2">Admin Panel</span>
+          <WalletOutlined className="text-[#2563eb] text-3xl" />
+          <span className="text-[#2563eb]">Withdrawals</span> <span className="text-lg font-light text-[#FFD666] ml-2">Admin Panel</span>
         </h1>
         <div className="flex gap-3 flex-wrap">
           <button
@@ -237,7 +238,7 @@ export default function WithdrawalsPage() {
           <button
             onClick={handleRefresh}
             disabled={loading}
-            className={`flex items-center gap-2 px-6 py-3 bg-[#F0B90B] hover:bg-[#FFD666] text-[#181A20] rounded-2xl font-bold shadow transition-all duration-200 border border-yellow-400
+            className={`flex items-center gap-2 px-6 py-3 bg-[#2563eb] hover:bg-[#3b82f6] text-white rounded-2xl font-bold shadow transition-all duration-200 border border-[#2563eb]
           ${loading ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-lg hover:-translate-y-0.5'}`}
           >
             <RedoOutlined className={`${loading ? 'animate-spin' : ''}`} /> Refresh
@@ -246,9 +247,9 @@ export default function WithdrawalsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <div className="bg-[#20232B] rounded-3xl shadow-xl border border-[#262A35] p-8 flex items-center gap-6 hover:shadow-2xl transition-all group">
-          <div className="p-5 rounded-2xl bg-blue-900/20 group-hover:bg-blue-900/40 transition-all">
-            <WalletOutlined className="text-[#F0B90B] text-4xl group-hover:scale-110 transition-transform" />
+        <div className="bg-green-900/20 rounded-3xl shadow-xl border border-green-700 p-8 flex items-center gap-6 hover:shadow-2xl transition-all group">
+          <div className="p-5 rounded-2xl bg-green-900/40 group-hover:bg-green-900/60 transition-all">
+            <WalletOutlined className="text-green-400 text-4xl group-hover:scale-110 transition-transform" />
           </div>
           <div>
             <h2 className="text-base font-semibold text-[#C0C0C0] uppercase tracking-wider">Total Withdrawals</h2>
@@ -325,6 +326,14 @@ export default function WithdrawalsPage() {
       key: 'telegramId',
       render: (val: string) => (
         <span style={{ fontFamily: 'monospace', color: '#FFD666', fontSize: 11 }}>{val || 'N/A'}</span>
+      ),
+    },
+    {
+      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Telegram Username</span>,
+      dataIndex: 'userId',
+      key: 'telegramUsername',
+      render: (userId: any) => (
+        <span style={{ fontFamily: 'monospace', color: '#FFD666', fontSize: 11 }}>{userId?.telegramUsername || 'N/A'}</span>
       ),
     },
     {
@@ -440,6 +449,6 @@ export default function WithdrawalsPage() {
   ]}
 /> 
       </div>
-    </AdminLayout>
+    </>
   ) 
 }

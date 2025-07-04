@@ -178,16 +178,17 @@ export default function SettingsPage() {
           <form onSubmit={handleSaveSettings} className="ml-[5%] p-8">
             <div className="flex justify-between items-center mb-8 bg-gray-900 p-6 rounded-2xl shadow-lg border border-gray-800 transition-all duration-300">
               <h1 className="text-2xl font-bold text-gray-100 flex items-center">
-                <SettingOutlined className="mr-3 text-blue-400" />
-                Settings
+                <SettingOutlined className="mr-3 text-green-400" />
+                <span className="text-green-400">Settings</span>
               </h1>
               <div className="flex gap-4">
                 <button
                   onClick={() => router.push('/admin')}
-                  className="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-all duration-300 shadow-md"
+                  className="flex items-center gap-2 px-6 py-3 text-green-400 rounded-xl transition-all duration-300 shadow-md"
+                  style={{ backgroundColor: 'rgba(163, 163, 163, 0.52)' }}
                 >
                   <DashboardOutlined />
-                  Dashboard
+                  <span className="text-green-400">Dashboard</span>
                 </button>
                 <button
                   onClick={handleSaveSettings}
@@ -202,6 +203,71 @@ export default function SettingsPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-6">
+              {/* Maintenance Settings - moved to top */}
+              <div className="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-6 text-gray-100">Maintenance Mode</h2>
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-gray-800 rounded-xl">
+                    <div>
+                      <h3 className="font-medium text-gray-100">Maintenance Mode</h3>
+                      <p className="text-sm text-gray-400">Enable maintenance mode to restrict access to the site</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={maintenanceEnabled}
+                        onChange={(e) => setMaintenanceEnabled(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Maintenance Message</label>
+                    <textarea
+                      value={maintenanceMessage}
+                      onChange={(e) => setMaintenanceMessage(e.target.value)}
+                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter maintenance message"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Allowed IPs (comma-separated)</label>
+                    <input
+                      type="text"
+                      value={allowedIps}
+                      onChange={(e) => setAllowedIps(e.target.value)}
+                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Enter allowed IPs"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Start Time</label>
+                      <input
+                        type="datetime-local"
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">End Time</label>
+                      <input
+                        type="datetime-local"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Bot Configuration */}
               <div className="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 p-6">
                 <h2 className="text-xl font-semibold mb-6 text-gray-100">Bot Configuration</h2>
@@ -365,71 +431,6 @@ export default function SettingsPage() {
                       />
                       <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Maintenance Settings */}
-              <div className="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 p-6 mb-6">
-                <h2 className="text-xl font-semibold mb-6 text-gray-100">Maintenance Mode</h2>
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-gray-800 rounded-xl">
-                    <div>
-                      <h3 className="font-medium text-gray-100">Maintenance Mode</h3>
-                      <p className="text-sm text-gray-400">Enable maintenance mode to restrict access to the site</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={maintenanceEnabled}
-                        onChange={(e) => setMaintenanceEnabled(e.target.checked)}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Maintenance Message</label>
-                    <textarea
-                      value={maintenanceMessage}
-                      onChange={(e) => setMaintenanceMessage(e.target.value)}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter maintenance message"
-                      rows={3}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Allowed IPs (comma-separated)</label>
-                    <input
-                      type="text"
-                      value={allowedIps}
-                      onChange={(e) => setAllowedIps(e.target.value)}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter allowed IPs"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">Start Time</label>
-                      <input
-                        type="datetime-local"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                        className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-2">End Time</label>
-                      <input
-                        type="datetime-local"
-                        value={endTime}
-                        onChange={(e) => setEndTime(e.target.value)}
-                        className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
