@@ -222,233 +222,246 @@ export default function WithdrawalsPage() {
   };
 
   return (
-    <>
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-10 gap-4 bg-gradient-to-br from-[#181A20] to-[#23272F] p-8 rounded-3xl shadow-2xl border border-[#262A35]">
-        <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
-          <WalletOutlined className="text-[#2563eb] text-3xl" />
-          <span className="text-[#2563eb]">Withdrawals</span> <span className="text-lg font-light text-[#FFD666] ml-2">Admin Panel</span>
-        </h1>
-        <div className="flex gap-3 flex-wrap">
-          <button
-            onClick={() => router.push('/admin')}
-            className="flex items-center gap-2 px-6 py-3 bg-[#23272F] hover:bg-[#2B3139] text-white rounded-2xl font-semibold shadow transition-all duration-200 border border-[#30343E]"
-          >
-            <DashboardOutlined /> Dashboard
-          </button>
-          <button
-            onClick={handleRefresh}
-            disabled={loading}
-            className={`flex items-center gap-2 px-6 py-3 bg-[#2563eb] hover:bg-[#3b82f6] text-white rounded-2xl font-bold shadow transition-all duration-200 border border-[#2563eb]
-          ${loading ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-lg hover:-translate-y-0.5'}`}
-          >
-            <RedoOutlined className={`${loading ? 'animate-spin' : ''}`} /> Refresh
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <div className="bg-green-900/20 rounded-3xl shadow-xl border border-green-700 p-8 flex items-center gap-6 hover:shadow-2xl transition-all group">
-          <div className="p-5 rounded-2xl bg-green-900/40 group-hover:bg-green-900/60 transition-all">
-            <WalletOutlined className="text-green-400 text-4xl group-hover:scale-110 transition-transform" />
-          </div>
-          <div>
-            <h2 className="text-base font-semibold text-[#C0C0C0] uppercase tracking-wider">Total Withdrawals</h2>
-            <p className="text-4xl font-extrabold text-white mt-1">${stats.total.toFixed(2)}</p>
-          </div>
-        </div>
-        <div className="bg-[#20232B] rounded-3xl shadow-xl border border-[#262A35] p-8 flex items-center gap-6 hover:shadow-2xl transition-all group">
-          <div className="p-5 rounded-2xl bg-green-900/20 group-hover:bg-green-900/40 transition-all">
-            <CheckCircleOutlined className="text-green-400 text-4xl group-hover:scale-110 transition-transform" />
-          </div>
-          <div>
-            <h2 className="text-base font-semibold text-[#C0C0C0] uppercase tracking-wider">Approved</h2>
-            <p className="text-4xl font-extrabold text-white mt-1">{stats.approved}</p>
-          </div>
-        </div>
-        <div className="bg-[#20232B] rounded-3xl shadow-xl border border-[#262A35] p-8 flex items-center gap-6 hover:shadow-2xl transition-all group">
-          <div className="p-5 rounded-2xl bg-yellow-900/20 group-hover:bg-yellow-900/40 transition-all">
-            <ClockCircleOutlined className="text-yellow-400 text-4xl group-hover:scale-110 transition-transform" />
-          </div>
-          <div>
-            <h2 className="text-base font-semibold text-[#C0C0C0] uppercase tracking-wider">Pending</h2>
-            <p className="text-4xl font-extrabold text-white mt-1">{stats.pending}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-[#181A20] rounded-3xl shadow-2xl border border-[#23272F] p-8">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-6">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Recent Withdrawals</h2>
-          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-            <div className="relative flex-grow md:flex-grow-0 md:min-w-[220px]">
-              <input
-                type="text"
-                placeholder="Search withdrawals..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#23272F] border border-[#30343E] rounded-2xl px-5 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 placeholder:text-[#C0C0C0]"
-              />
+    <div className="min-h-screen bg-[#0F1117] p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 bg-size-200 animate-gradient p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-2xl border border-blue-300">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight flex flex-col sm:flex-row sm:items-center gap-2">
+            <div className="flex items-center gap-2">
+              <WalletOutlined className="text-white text-xl sm:text-2xl lg:text-3xl" />
+              <span className="text-white">Withdrawals</span>
             </div>
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="bg-[#23272F] border border-[#30343E] rounded-2xl px-5 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
-            >
-              <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-            </select>
+           
+          </h1>
+
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
+            <div className="p-3 sm:p-4 lg:p-5 rounded-2xl bg-blue-900/40 group-hover:bg-blue-900/60 transition-all flex-shrink-0">
+              <WalletOutlined className="text-white text-2xl sm:text-3xl lg:text-4xl group-hover:scale-110 transition-transform" />
+            </div>
+            <div className="text-center sm:text-left flex-1">
+              <h2 className="text-sm sm:text-base font-semibold uppercase tracking-wider" style={{ color: 'lime' }}>Total Withdrawals</h2>
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1">${stats.total.toFixed(2)}</p>
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
+            <div className="p-3 sm:p-4 lg:p-5 rounded-2xl bg-purple-900/40 group-hover:bg-purple-900/60 transition-all flex-shrink-0">
+              <CheckCircleOutlined className="text-white text-2xl sm:text-3xl lg:text-4xl group-hover:scale-110 transition-transform" />
+            </div>
+            <div className="text-center sm:text-left flex-1">
+              <h2 className="text-sm sm:text-base font-semibold uppercase tracking-wider" style={{ color: 'lime' }}>Approved</h2>
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1">{stats.approved}</p>
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] sm:col-span-2 lg:col-span-1">
+            <div className="p-3 sm:p-4 lg:p-5 rounded-2xl bg-indigo-900/40 group-hover:bg-indigo-900/60 transition-all flex-shrink-0">
+              <ClockCircleOutlined className="text-white text-2xl sm:text-3xl lg:text-4xl group-hover:scale-110 transition-transform" />
+            </div>
+            <div className="text-center sm:text-left flex-1">
+              <h2 className="text-sm sm:text-base font-semibold uppercase tracking-wider" style={{ color: 'lime' }}>Pending</h2>
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-1">{stats.pending}</p>
+            </div>
           </div>
         </div>
-        <Table
-  dataSource={filteredWithdrawals}
-  rowKey="_id"
-  size="small"
-  pagination={{ pageSize: 10 }}
-  bordered
-  style={{ background: '#181A20', borderRadius: 16 }}
-  columns={[
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>User</span>,
-      dataIndex: 'userId',
-      key: 'user',
-      render: (userId: any) => (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontWeight: 500 }}>{userId?.username ?? 'N/A'}</span>
-          <span style={{ fontSize: 11, color: '#aaa' }}>{userId?.email ?? 'N/A'}</span>
+
+        {/* Table Section */}
+        <div className="bg-[#181A20] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#23272F] p-4 sm:p-6 lg:p-8 overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Recent Withdrawals</h2>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+              <div className="relative flex-grow sm:flex-grow-0 sm:min-w-[200px] lg:min-w-[220px]">
+                <input
+                  type="text"
+                  placeholder="Search withdrawals..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-[#23272F] border border-[#30343E] rounded-xl sm:rounded-2xl px-4 sm:px-5 py-2 sm:py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 placeholder:text-[#C0C0C0] text-sm sm:text-base"
+                />
+              </div>
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="bg-[#23272F] border border-[#30343E] rounded-xl sm:rounded-2xl px-4 sm:px-5 py-2 sm:py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
+              >
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <Table
+              dataSource={filteredWithdrawals}
+              rowKey="_id"
+              size="small"
+              pagination={{ 
+                pageSize: 10,
+                showSizeChanger: false,
+                showQuickJumper: false,
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+              }}
+              bordered
+              style={{ background: '#181A20', borderRadius: 16 }}
+              scroll={{ x: 'max-content' }}
+              columns={[
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>User</span>,
+                  dataIndex: 'userId',
+                  key: 'user',
+                  width: 120,
+                  render: (userId: any) => (
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontWeight: 500, fontSize: '11px' }}>{userId?.username ?? 'N/A'}</span>
+                      <span style={{ fontSize: 10, color: '#aaa' }}>{userId?.email ?? 'N/A'}</span>
+                    </div>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Telegram ID</span>,
+                  dataIndex: 'telegramId',
+                  key: 'telegramId',
+                  width: 100,
+                  render: (val: string) => (
+                    <span style={{ fontFamily: 'monospace', color: '#FFD666', fontSize: 10 }}>{val || 'N/A'}</span>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Username</span>,
+                  dataIndex: 'userId',
+                  key: 'username',
+                  width: 100,
+                  render: (userId: any) => (
+                    <span style={{ fontFamily: 'monospace', color: '#FFD666', fontSize: 10 }}>
+                      {userId?.username || userId?.telegramUsername || 'N/A'}
+                    </span>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Amount</span>,
+                  dataIndex: 'amount',
+                  key: 'amount',
+                  width: 120,
+                  render: (_: any, row: any) => row.metadata?.originalAmount && row.metadata?.currency ? (
+                    <span style={{ color: '#4ade80', fontWeight: 500, fontSize: 11 }}>
+                      {row.metadata.originalAmount} {row.metadata.currency.toUpperCase()} <span style={{ color: '#888' }}>({((row.amount ?? row.bdtAmount) ?? 0).toFixed(2)})</span>
+                    </span>
+                  ) : (
+                    <span style={{ color: '#4ade80', fontWeight: 500, fontSize: 11 }}>{((row.amount ?? row.bdtAmount) ?? 0).toFixed(2)}</span>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Net Amount</span>,
+                  dataIndex: 'netAmount',
+                  key: 'netAmount',
+                  width: 100,
+                  render: (_: any, row: any) => row.metadata?.amountAfterFee && row.metadata?.currency ? (
+                    <span style={{ color: '#60a5fa', fontWeight: 500, fontSize: 11 }}>{row.metadata.amountAfterFee} {row.metadata.currency.toUpperCase()}</span>
+                  ) : (
+                    <span style={{ color: '#888', fontSize: 10 }}>N/A</span>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Payment Method</span>,
+                  dataIndex: 'method',
+                  key: 'method',
+                  width: 120,
+                  render: (method: string) => getMethodBadge(method),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Recipient</span>,
+                  dataIndex: 'recipient',
+                  key: 'recipient',
+                  width: 150,
+                  render: (val: string) => (
+                    <span style={{ fontFamily: 'monospace', color: '#eee', fontSize: 10 }}>{val || 'N/A'}</span>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Status</span>,
+                  dataIndex: 'status',
+                  key: 'status',
+                  width: 100,
+                  render: (status: string, row: any) => (
+                    <Tag color={
+                      status === 'approved' ? 'green' :
+                      status === 'rejected' ? 'red' : 'gold'
+                    } style={{ fontSize: 10, borderRadius: 6, padding: '1px 6px' }}>
+                      {getStatusIcon(status)} {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </Tag>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Date</span>,
+                  dataIndex: 'createdAt',
+                  key: 'date',
+                  width: 120,
+                  render: (createdAt: string) => (
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontWeight: 500, fontSize: 11 }}>{new Date(createdAt).toLocaleDateString()}</span>
+                      <span style={{ fontSize: 10, color: '#aaa' }}>{new Date(createdAt).toLocaleTimeString()}</span>
+                    </div>
+                  ),
+                },
+                {
+                  title: <span style={{ color: '#FFD666', fontWeight: 700, fontSize: '12px' }}>Actions</span>,
+                  key: 'actions',
+                  width: 200,
+                  render: (_: any, row: any) => (
+                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                      {row.status === 'pending' && (
+                        <>
+                          <Button
+                            size="small"
+                            type="primary"
+                            style={{ background: '#22c55e', borderColor: '#22c55e', fontSize: 10, minWidth: 50, height: 24 }}
+                            onClick={() => handleApprove(row._id)}
+                            loading={loading}
+                          >Approve</Button>
+                          <Button
+                            size="small"
+                            danger
+                            style={{ fontSize: 10, minWidth: 50, height: 24 }}
+                            onClick={() => handleReject(row._id)}
+                            loading={loading}
+                          >Reject</Button>
+                          {isCrypto(row.method) && (
+                            <Button
+                              size="small"
+                              style={{ background: '#FFD666', borderColor: '#FFD666', color: '#181A20', fontWeight: 700, fontSize: 10, height: 24 }}
+                              onClick={() => handleAutoPay(row._id)}
+                              loading={loading}
+                              icon={<ThunderboltOutlined style={{ color: '#ad850e' }} />}
+                            >Auto Pay</Button>
+                          )}
+                          <Button
+                            size="small"
+                            style={{ background: '#2563eb', borderColor: '#2563eb', color: '#fff', fontSize: 10, height: 24 }}
+                            onClick={() => handleViewDetails(row._id)}
+                          >Details</Button>
+                        </>
+                      )}
+                      {row.status !== 'pending' && (
+                        <>
+                          <span style={{ fontSize: 10, color: '#aaa', marginRight: 4 }}>{row.status === 'approved' ? 'Approved' : 'Rejected'}</span>
+                          <Button
+                            size="small"
+                            style={{ background: '#2563eb', borderColor: '#2563eb', color: '#fff', fontSize: 10, height: 24 }}
+                            onClick={() => handleViewDetails(row._id)}
+                          >Details</Button>
+                        </>
+                      )}
+                    </div>
+                  ),
+                },
+              ]}
+            />
+          </div>
         </div>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Telegram ID</span>,
-      dataIndex: 'telegramId',
-      key: 'telegramId',
-      render: (val: string) => (
-        <span style={{ fontFamily: 'monospace', color: '#FFD666', fontSize: 11 }}>{val || 'N/A'}</span>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Telegram Username</span>,
-      dataIndex: 'userId',
-      key: 'telegramUsername',
-      render: (userId: any) => (
-        <span style={{ fontFamily: 'monospace', color: '#FFD666', fontSize: 11 }}>{userId?.telegramUsername || 'N/A'}</span>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Amount</span>,
-      dataIndex: 'amount',
-      key: 'amount',
-      render: (_: any, row: any) => row.metadata?.originalAmount && row.metadata?.currency ? (
-        <span style={{ color: '#4ade80', fontWeight: 500, fontSize: 12 }}>
-          {row.metadata.originalAmount} {row.metadata.currency.toUpperCase()} <span style={{ color: '#888' }}>({((row.amount ?? row.bdtAmount) ?? 0).toFixed(2)})</span>
-        </span>
-      ) : (
-        <span style={{ color: '#4ade80', fontWeight: 500, fontSize: 12 }}>{((row.amount ?? row.bdtAmount) ?? 0).toFixed(2)}</span>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Net Amount</span>,
-      dataIndex: 'netAmount',
-      key: 'netAmount',
-      render: (_: any, row: any) => row.metadata?.amountAfterFee && row.metadata?.currency ? (
-        <span style={{ color: '#60a5fa', fontWeight: 500, fontSize: 12 }}>{row.metadata.amountAfterFee} {row.metadata.currency.toUpperCase()}</span>
-      ) : (
-        <span style={{ color: '#888', fontSize: 11 }}>N/A</span>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Payment Method</span>,
-      dataIndex: 'method',
-      key: 'method',
-      render: (method: string) => getMethodBadge(method),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Recipient</span>,
-      dataIndex: 'recipient',
-      key: 'recipient',
-      render: (val: string) => (
-        <span style={{ fontFamily: 'monospace', color: '#eee', fontSize: 11 }}>{val || 'N/A'}</span>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Status</span>,
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string, row: any) => (
-        <Tag color={
-          status === 'approved' ? 'green' :
-          status === 'rejected' ? 'red' : 'gold'
-        } style={{ fontSize: 11, borderRadius: 8, padding: '2px 8px' }}>
-          {getStatusIcon(status)} {status.charAt(0).toUpperCase() + status.slice(1)}
-        </Tag>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Date</span>,
-      dataIndex: 'createdAt',
-      key: 'date',
-      render: (createdAt: string) => (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontWeight: 500 }}>{new Date(createdAt).toLocaleDateString()}</span>
-          <span style={{ fontSize: 11, color: '#aaa' }}>{new Date(createdAt).toLocaleTimeString()}</span>
-        </div>
-      ),
-    },
-    {
-      title: <span style={{ color: '#FFD666', fontWeight: 700 }}>Actions</span>,
-      key: 'actions',
-      render: (_: any, row: any) => (
-        <div style={{ display: 'flex', gap: 6 }}>
-          {row.status === 'pending' && (
-            <>
-              <Button
-                size="small"
-                type="primary"
-                style={{ background: '#22c55e', borderColor: '#22c55e', fontSize: 11, minWidth: 56 }}
-                onClick={() => handleApprove(row._id)}
-                loading={loading}
-              >Approve</Button>
-              <Button
-                size="small"
-                danger
-                style={{ fontSize: 11, minWidth: 56 }}
-                onClick={() => handleReject(row._id)}
-                loading={loading}
-              >Reject</Button>
-              {isCrypto(row.method) && (
-                <Button
-                  size="small"
-                  style={{ background: '#FFD666', borderColor: '#FFD666', color: '#181A20', fontWeight: 700, fontSize: 11 }}
-                  onClick={() => handleAutoPay(row._id)}
-                  loading={loading}
-                  icon={<ThunderboltOutlined style={{ color: '#ad850e' }} />}
-                >Auto Pay</Button>
-              )}
-              <Button
-                size="small"
-                style={{ background: '#2563eb', borderColor: '#2563eb', color: '#fff', fontSize: 11 }}
-                onClick={() => handleViewDetails(row._id)}
-              >Details</Button>
-            </>
-          )}
-          {row.status !== 'pending' && (
-            <>
-              <span style={{ fontSize: 12, color: '#aaa', marginRight: 4 }}>{row.status === 'approved' ? 'Approved' : 'Rejected'}</span>
-              <Button
-                size="small"
-                style={{ background: '#2563eb', borderColor: '#2563eb', color: '#fff', fontSize: 11 }}
-                onClick={() => handleViewDetails(row._id)}
-              >Details</Button>
-            </>
-          )}
-        </div>
-      ),
-    },
-  ]}
-/> 
       </div>
-    </>
+    </div>
   ) 
 }

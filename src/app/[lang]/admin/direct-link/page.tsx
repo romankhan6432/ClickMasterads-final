@@ -195,7 +195,7 @@ export default function DirectLinkPage() {
   return (
 
 
-    <main className="ml-[6%] p-8">
+    <main className="p-8">
       <div className="flex justify-between items-center mb-8 bg-gray-800/80 p-6 rounded-2xl shadow-lg border border-gray-700 hover:border-gray-600 transition-all duration-300">
         <h1 className="text-2xl font-bold text-gray-100 flex items-center gap-3">
           <div className="p-3 rounded-xl bg-blue-600/20 text-blue-400">
@@ -223,38 +223,38 @@ export default function DirectLinkPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gray-800/80 rounded-2xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-gray-600 group">
+        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
           <div className="flex items-center">
             <div className="p-4 rounded-xl bg-blue-900/30 group-hover:bg-blue-900/40 transition-all duration-300">
               <LinkOutlined className="text-blue-400 text-2xl group-hover:scale-110 transition-transform" />
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider group-hover:text-gray-300 transition-colors">Total Links</h2>
-              <p className="text-3xl font-bold text-white mt-1 group-hover:text-blue-400 transition-colors">{stats.totalLinks}</p>
+              <h2 className="text-sm sm:text-base font-semibold uppercase tracking-wider" style={{ color: 'orange' }}>Total Links</h2>
+              <p className="text-3xl font-bold text-lime-400 mt-1 group-hover:text-lime-300 transition-colors">{stats.totalLinks}</p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-800/80 rounded-2xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-gray-600 group">
+        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
           <div className="flex items-center">
             <div className="p-4 rounded-xl bg-green-900/30 group-hover:bg-green-900/40 transition-all duration-300">
               <WalletOutlined className="text-green-400 text-2xl group-hover:scale-110 transition-transform" />
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider group-hover:text-gray-300 transition-colors">Total Earnings</h2>
-              <p className="text-3xl font-bold text-white mt-1 group-hover:text-green-400 transition-colors">
+              <h2 className="text-sm sm:text-base font-semibold uppercase tracking-wider" style={{ color: 'orange' }}>Total Earnings</h2>
+              <p className="text-3xl font-bold text-lime-400 mt-1 group-hover:text-lime-300 transition-colors">
                 ${stats.totalEarnings}
               </p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-800/80 rounded-2xl shadow-lg border border-gray-700 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-gray-600 group">
+        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
           <div className="flex items-center">
             <div className="p-4 rounded-xl bg-yellow-900/30 group-hover:bg-yellow-900/40 transition-all duration-300">
               <LinkOutlined className="text-yellow-400 text-2xl group-hover:scale-110 transition-transform" />
             </div>
             <div className="ml-4">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider group-hover:text-gray-300 transition-colors">Total Clicks</h2>
-              <p className="text-3xl font-bold text-white mt-1 group-hover:text-yellow-400 transition-colors">{stats.totalClicks}</p>
+              <h2 className="text-sm sm:text-base font-semibold uppercase tracking-wider" style={{ color: 'orange' }}>Total Clicks</h2>
+              <p className="text-3xl font-bold text-lime-400 mt-1 group-hover:text-lime-300 transition-colors">{stats.totalClicks}</p>
             </div>
           </div>
         </div>

@@ -174,7 +174,7 @@ export default function SettingsPage() {
   };
 
   return (
-    
+    <div className="h-screen overflow-y-auto">
           <form onSubmit={handleSaveSettings} className="ml-[5%] p-8">
             <div className="flex justify-between items-center mb-8 bg-gray-900 p-6 rounded-2xl shadow-lg border border-gray-800 transition-all duration-300">
               <h1 className="text-2xl font-bold text-gray-100 flex items-center">
@@ -436,6 +436,6 @@ export default function SettingsPage() {
               </div>
             </div>
           </form>
-     
+        </div>
   );
 }
