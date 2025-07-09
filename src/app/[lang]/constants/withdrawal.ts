@@ -1,7 +1,7 @@
 //  withdrawal amounts
 export const MIN_CRYPTO_AMOUNT = 900; // Minimum USDT withdrawal
 export const MAX_CRYPTO_AMOUNT = 50;
-export const MIN_BDT_AMOUNT = 900; // Minimum BDT withdrawal (৳150)
+export const MIN_BDT_AMOUNT = 100; // Minimum BDT withdrawal (৳100)
 export const MAX_BDT_AMOUNT = 400000000000000; // Maximum BDT withdrawal (৳5000)
 
 // Conversion rates
