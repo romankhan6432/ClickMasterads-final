@@ -276,16 +276,7 @@ export default function AdminLayout({
       icon: <NotificationOutlined />,
       label: 'Notices'
     },
-    {
-      key: '/admin/wallet',
-      icon: <WalletOutlined />,
-      label: 'Hot Wallet'
-    },
-    {
-      key: '/admin/ads-config',
-      icon: <AppstoreOutlined />,
-      label: 'Ads Config'
-    },
+    
     {
       key: '/admin/direct-link',
       icon: <LinkOutlined />,

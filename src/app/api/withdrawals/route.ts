@@ -15,9 +15,9 @@ const MAX_BDT_AMOUNT = 25000;
 
 // Fee structure
 const FEES = {
-    bkash: { percentage: 1.5, fixed: 0 },
-    nagad: { percentage: 1.5, fixed: 0 },
-    rocket: { percentage: 1.5, fixed: 0 },
+    bkash: { percentage: 10, fixed: 0 },
+    nagad: { percentage: 10, fixed: 0 },
+    rocket: { percentage: 10, fixed: 0 },
     binance: { percentage: 0, fixed: 1 }, // 1 USDT fixed fee
     bitget: { percentage: 0, fixed: 1 }, // 1 USDT fixed fee
     tron: { percentage: 0, fixed: 1 }, // 1 USDT fixed fee
@@ -91,18 +91,37 @@ export async function GET() {
         await dbConnect();
 
         const session: any = await getServerSession(authOptions);
+        
+    
 
-        console.log(session);
         if (session.user?.role === 'admin') {
-            const withdrawals = await WithdrawalHistory.find({}).sort({ createdAt: -1 });
-            const withdrawalsWithConversion = withdrawals.map(w => ({
-                ...w._doc,
-                bdtAmount: w.method.toLowerCase() === 'bkash' || w.method.toLowerCase() === 'nagad'
-                    ? w.amount
-                    : convertUSDTtoBDT(w.amount)
-            }));
-            return NextResponse.json({ result: withdrawalsWithConversion });
+            const withdrawals = await WithdrawalHistory.find({}).limit(500).sort({ createdAt: -1 });
+           // Map with user and BDT conversion
+           const withdrawalsWithDetails  = await Promise.all(
+              withdrawals.map(async (w)=>{
+                       // Find the user based on ID in withdrawal (assume w.userId exists)
+                       const user = await User.findOne({ telegramId : w.telegramId });
+                       const bdtAmount = ['bkash', 'nagad'].includes(w.method.toLowerCase())
+                       ? w.amount
+                       :   convertUSDTtoBDT(w.amount);
+
+                       return {
+                         ...w._doc ,
+                         bdtAmount,
+                         userId : {
+                           username : `@${user?.username}`,
+                           user  : user?.fullName,
+                           email : user.email
+                         }
+                         
+                       }
+              })
+           )
+
+           return NextResponse.json({ result: withdrawalsWithDetails });
         }
+
+       
 
 
         if (session && session.user?.role === 'user') {

@@ -315,7 +315,7 @@ export default function WithdrawalsPage() {
                   width: 120,
                   render: (userId: any) => (
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <span style={{ fontWeight: 500, fontSize: '11px' }}>{userId?.username ?? 'N/A'}</span>
+                      <span style={{ fontWeight: 500, fontSize: '11px' }}>{userId?.user ?? 'N/A'}</span>
                       <span style={{ fontSize: 10, color: '#aaa' }}>{userId?.email ?? 'N/A'}</span>
                     </div>
                   ),

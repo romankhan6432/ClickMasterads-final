@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button, Table, Modal, Form, Input, Switch, message, Popconfirm } from 'antd';
+import { Button, Table, Modal, Form, Input, Switch, message, Popconfirm, Space } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
@@ -56,7 +56,7 @@ export default function NoticesPage() {
         await axios.post('/api/admin/notices', values);
         message.success('Notice created successfully');
       }
-      
+
       setModalVisible(false);
       form.resetFields();
       setEditingNotice(null);
@@ -133,28 +133,30 @@ export default function NoticesPage() {
       key: 'actions',
       render: (_: any, record: Notice) => (
         <div className="flex space-x-2">
-          <Button 
-            type="primary" 
-            icon={<EditOutlined />} 
-            onClick={() => openEditModal(record)}
-            className="bg-blue-500"
-          >
-            Edit
-          </Button>
-          <Popconfirm
-            title="Are you sure you want to delete this notice?"
-            onConfirm={() => handleDelete(record._id)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button 
-              type="primary" 
-              danger 
-              icon={<DeleteOutlined />}
+          <Space>
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => openEditModal(record)}
+              className="bg-blue-500"
             >
-              Delete
+              Edit
             </Button>
-          </Popconfirm>
+            <Popconfirm
+              title="Are you sure you want to delete this notice?"
+              onConfirm={() => handleDelete(record._id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                type="primary"
+                danger
+                icon={<DeleteOutlined />}
+              >
+                Delete
+              </Button>
+            </Popconfirm>
+          </Space>
         </div>
       ),
     },
@@ -164,9 +166,9 @@ export default function NoticesPage() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-white">Manage Notices</h1>
-        <Button 
-          type="primary" 
-          icon={<PlusOutlined />} 
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
           onClick={openCreateModal}
           className="bg-green-500"
         >
@@ -174,10 +176,10 @@ export default function NoticesPage() {
         </Button>
       </div>
 
-      <Table 
-        columns={columns} 
-        dataSource={notices} 
-        rowKey="_id" 
+      <Table
+        columns={columns}
+        dataSource={notices}
+        rowKey="_id"
         loading={loading}
         pagination={{ pageSize: 10 }}
         className="bg-gray-800 rounded-lg overflow-hidden"
@@ -221,10 +223,10 @@ export default function NoticesPage() {
 
           <Form.Item>
             <div className="flex justify-end space-x-2">
-              <Button onClick={() => setModalVisible(false)}>Cancel</Button>
-              <Button type="primary" htmlType="submit" className="bg-blue-500">
-                {editingNotice ? 'Update' : 'Create'}
-              </Button>
+              <Space> <Button onClick={() => setModalVisible(false)}>Cancel</Button>
+                <Button type="primary" htmlType="submit" className="bg-blue-500">
+                  {editingNotice ? 'Update' : 'Create'}
+                </Button></Space>
             </div>
           </Form.Item>
         </Form>

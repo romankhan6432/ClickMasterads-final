@@ -22,6 +22,7 @@ import { API_CALL } from '@/lib/client';
 
 import { message } from 'antd';
 import UserDetailsModal from '../../components/modals/UserDetailsModal';
+import { Table, Card } from 'antd';
 
 
 interface User {
@@ -153,6 +154,107 @@ export default function UsersPage() {
     }
   ];
 
+  // Columns for Ant Design Table
+  const columns = [
+    {
+      title: 'Username',
+      dataIndex: 'username',
+      key: 'username',
+      render: (text: string, record: User) => (
+        <div className="flex items-center">
+          <div className="h-8 w-8 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
+            <UserOutlined className="text-gray-400" />
+          </div>
+          <div className="ml-3">
+            <span className="font-medium text-gray-100">{text}</span>
+            <p className="text-sm text-gray-400">{record.fullName}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      render: (text: string, record: User) => (
+        <div className="flex flex-col">
+          <span className="text-gray-300">{text}</span>
+          <span className="text-sm text-gray-400">ID: {record.telegramId}</span>
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+          ${status === 'active'
+            ? 'bg-green-900/20 text-green-400'
+            : 'bg-red-900/20 text-red-400'
+          }`}>
+          {status}
+        </span>
+      ),
+    },
+    {
+      title: 'Role',
+      dataIndex: 'role',
+      key: 'role',
+      render: (role: string) => (
+        <span className="text-xs text-blue-400 capitalize">{role}</span>
+      ),
+    },
+    {
+      title: 'Balance',
+      dataIndex: 'balance',
+      key: 'balance',
+      render: (balance: number, record: User) => (
+        <div className="flex flex-col">
+          <span className="text-gray-300">${balance.toFixed(2)}</span>
+          <span className="text-sm text-gray-400">
+            Total: ${record.totalEarnings.toFixed(2)}
+          </span>
+        </div>
+      ),
+    },
+    {
+      title: 'Joined Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: string, record: User) => (
+        <div className="flex flex-col">
+          <span className="text-gray-300">{new Date(date).toLocaleDateString()}</span>
+          <span className="text-sm text-gray-400">
+            Ads: {record.adsWatched}
+          </span>
+        </div>
+      ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_: any, record: User) => (
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => handleViewUser(record)}
+            className="p-2 text-green-400 hover:text-green-500 transition-colors duration-200"
+            title="View Details"
+          >
+            <EyeOutlined />
+          </button>
+          <button
+            onClick={() => handleDeleteUser(record._id)}
+            className="p-2 text-red-100 hover:bg-red-100 hover:text-white transition-colors duration-200"
+            title="Delete User"
+          >
+            <DeleteOutlined />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
   return (
 
   <>
@@ -184,50 +286,66 @@ export default function UsersPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-          <div className="flex items-center">
-            <div className="p-4 rounded-xl bg-blue-900/20 group-hover:bg-blue-900/40 transition-all duration-300">
-              <UserOutlined className="text-blue-400 text-2xl group-hover:scale-110 transition-transform" />
+        <Card
+          bordered={false}
+          className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border-blue-500 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] shadow-2xl"
+          bodyStyle={{ padding: 0 }}
+        >
+          <div className="flex items-center p-4 sm:p-6 lg:p-8 gap-4 sm:gap-6">
+            <div className="p-4 rounded-xl bg-blue-900/20">
+              <UserOutlined className="text-blue-400 text-2xl" />
             </div>
             <div className="ml-4">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Total Users</h2>
               <p className="text-3xl font-bold text-white mt-1">{stats?.totalUsers || 0}</p>
             </div>
           </div>
-        </div>
-        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-          <div className="flex items-center">
-            <div className="p-4 rounded-xl bg-green-900/20 group-hover:bg-green-900/40 transition-all duration-300">
-              <DashboardOutlined className="text-green-400 text-2xl group-hover:scale-110 transition-transform" />
+        </Card>
+        <Card
+          bordered={false}
+          className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border-blue-500 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] shadow-2xl"
+          bodyStyle={{ padding: 0 }}
+        >
+          <div className="flex items-center p-4 sm:p-6 lg:p-8 gap-4 sm:gap-6">
+            <div className="p-4 rounded-xl bg-green-900/20">
+              <DashboardOutlined className="text-green-400 text-2xl" />
             </div>
             <div className="ml-4">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Total Earnings</h2>
-              <p className="text-3xl font-bold text-white mt-1">${stats?.totalEarnings.toFixed(2) || 0}</p>
+              <p className="text-3xl font-bold text-white mt-1">${stats?.totalEarnings?.toFixed(2) || 0}</p>
             </div>
           </div>
-        </div>
-        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-          <div className="flex items-center">
-            <div className="p-4 rounded-xl bg-yellow-900/20 group-hover:bg-yellow-900/40 transition-all duration-300">
-              <TeamOutlined className="text-yellow-400 text-2xl group-hover:scale-110 transition-transform" />
+        </Card>
+        <Card
+          bordered={false}
+          className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border-blue-500 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] shadow-2xl"
+          bodyStyle={{ padding: 0 }}
+        >
+          <div className="flex items-center p-4 sm:p-6 lg:p-8 gap-4 sm:gap-6">
+            <div className="p-4 rounded-xl bg-yellow-900/20">
+              <TeamOutlined className="text-yellow-400 text-2xl" />
             </div>
             <div className="ml-4">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">New Users (24h)</h2>
               <p className="text-3xl font-bold text-white mt-1">{stats?.newUsersLast24h || 0}</p>
             </div>
           </div>
-        </div>
-        <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border border-blue-500 p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:shadow-2xl transition-all group min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-          <div className="flex items-center">
-            <div className="p-4 rounded-xl bg-purple-900/20 group-hover:bg-purple-900/40 transition-all duration-300">
-              <HistoryOutlined className="text-purple-400 text-2xl group-hover:scale-110 transition-transform" />
+        </Card>
+        <Card
+          bordered={false}
+          className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl sm:rounded-3xl border-blue-500 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] shadow-2xl"
+          bodyStyle={{ padding: 0 }}
+        >
+          <div className="flex items-center p-4 sm:p-6 lg:p-8 gap-4 sm:gap-6">
+            <div className="p-4 rounded-xl bg-purple-900/20">
+              <HistoryOutlined className="text-purple-400 text-2xl" />
             </div>
             <div className="ml-4">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Total Ads Watched</h2>
               <p className="text-3xl font-bold text-white mt-1">{stats?.totalAdsWatched || 0}</p>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Search Bar */}
@@ -245,105 +363,15 @@ export default function UsersPage() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-800">
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Username</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Role</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Balance</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Joined Date</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-800">
-              {loading ? (
-                <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-gray-400">
-                    Loading users...
-                  </td>
-                </tr>
-              ) : filteredUsers.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-gray-400">
-                    No users found
-                  </td>
-                </tr>
-              ) : (
-                filteredUsers.map((user) => (
-                  <tr key={user._id} className="hover:bg-gray-800/50 transition-colors duration-200">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <div className="h-8 w-8 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
-                          <UserOutlined className="text-gray-400" />
-                        </div>
-                        <div className="ml-3">
-                          <span className="font-medium text-gray-100">{user.username}</span>
-                          <p className="text-sm text-gray-400">{user.fullName}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex flex-col">
-                        <span className="text-gray-300">{user.email}</span>
-                        <span className="text-sm text-gray-400">ID: {user.telegramId}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                              ${user.status === 'active'
-                          ? 'bg-green-900/20 text-green-400'
-                          : 'bg-red-900/20 text-red-400'
-                        }`}>
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-xs text-blue-400 capitalize">{user.role}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex flex-col">
-                        <span className="text-gray-300">${user.balance.toFixed(2)}</span>
-                        <span className="text-sm text-gray-400">
-                          Total: ${user.totalEarnings.toFixed(2)}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex flex-col">
-                        <span className="text-gray-300">{new Date(user.createdAt).toLocaleDateString()}</span>
-                        <span className="text-sm text-gray-400">
-                          Ads: {user.adsWatched}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => handleViewUser(user)}
-                          className="p-2 text-gray-400 hover:text-blue-400 transition-colors duration-200"
-                          title="View Details"
-                        >
-                          <EyeOutlined />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteUser(user._id)}
-                          className="p-2 text-gray-400 hover:text-red-400 transition-colors duration-200"
-                          title="Delete User"
-                        >
-                          <DeleteOutlined />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-800 overflow-hidden">
+        <Table
+          columns={columns}
+          dataSource={filteredUsers}
+          rowKey="_id"
+          loading={loading}
+          pagination={{ pageSize: 10 }}
+          className="bg-black rounded-2xl shadow-lg border-none overflow-hidden"
+        />
       </div>
 
 

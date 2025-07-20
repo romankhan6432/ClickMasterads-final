@@ -23,6 +23,8 @@ export async function GET(request: Request, context: any) {
     
         
         const withdrawal = await WithdrawalHistory.findById(id);
+  // Find the user based on ID in withdrawal (assume w.userId exists)
+    const user = await User.findOne({ telegramId : withdrawal.telegramId });
 
         if (!withdrawal) {
             return NextResponse.json(
@@ -30,8 +32,15 @@ export async function GET(request: Request, context: any) {
                 { status: 404 }
             );
         }
+
+        const result = {  ...withdrawal._doc ,
+             userId : {
+                username : `@${user?.username}`,
+                user  : user?.fullName,
+               
+        } }
          
-        return NextResponse.json({ result : withdrawal});
+        return NextResponse.json({ result });
     } catch (error: any) {
         console.error(error);
         return NextResponse.json(

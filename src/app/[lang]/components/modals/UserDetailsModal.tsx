@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { UserIcon, WalletIcon, LockClosedIcon, UsersIcon } from '@heroicons/react/24/outline';
 import Modal from '../ui/Modal';
-import Tabs from '../ui/Tabs';
+import { Tabs } from 'antd';
 
 interface UserDetailsModalProps {
   isOpen: boolean;

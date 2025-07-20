@@ -19,7 +19,8 @@ const nextConfig: NextConfig = {
       "static.thenounproject.com"
     ],
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
+  swcMinify: true,
   // Disable x-powered-by header for security
   poweredByHeader: false,
 };
