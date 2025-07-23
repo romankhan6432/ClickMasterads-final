@@ -53,7 +53,7 @@ export default function DailyProgress() {
             const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
             const utcHour = utcNow.getUTCHours();
             console.log(utcHour)
-            if (utcHour === 10) {
+            if (utcHour === 11) {
                 // It's 12:00 AM UTC and not reset yet today
                 handleReset();
             }
@@ -65,7 +65,10 @@ export default function DailyProgress() {
             const now = new Date();
             const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
             const target = new Date(utcNow);
-            target.setUTCHours(10, 49, 0, 0); // Set target to 12 AM UTC
+
+
+            target.setUTCHours(11, 5, 0, 0); //
+            //  Set target to 12 AM UTC
 
             if (utcNow.getTime() > target.getTime()) {
                 target.setDate(target.getDate() + 1);
