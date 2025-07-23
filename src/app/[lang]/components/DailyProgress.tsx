@@ -1,13 +1,10 @@
 'use client';
+import { API_CALL } from '@/lib/client';
 import { RootState } from '@/modules/store';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-
-interface DailyProgressProps {
-    adsWatched: number;
-    maxAds?: number;
-}
+import { toast } from 'react-toastify';
 
 interface TimeUnit {
     value: number;
@@ -17,19 +14,59 @@ interface TimeUnit {
 export default function DailyProgress() {
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const { user } = useSelector((state: RootState) => state.public.auth);
-    const adsWatched = user?.adsWatched || 0
+    const adsWatched = user?.adsWatched || 0;
     const DAILY_AD_LIMIT = 300;
     const progress = Math.min((adsWatched / DAILY_AD_LIMIT) * 100, 100);
     const { t } = useTranslation();
+    const LAST_RESET_KEY = 'lastResetDate';
+
+    const getUtcDateString = () => {
+        const now = new Date();
+        return now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
+    };
+
+
+
+    const handleReset = async () => {
+        
+        localStorage.setItem(LAST_RESET_KEY, getUtcDateString());
+        try {
+           const res = await API_CALL({  url : 'reset-daily' , method : 'POST' })
+           
+            console.log('Reset API response:', res.response?.message);
+            toast.success(res.response?.message as string)
+            // Optionally, refresh Redux state or UI
+            // dispatch(fetchUserData());
+
+        } catch (error) {
+            console.error('Error calling reset API:', error);
+        }
+    };
+
+    
+    const checkAndReset = () => {
+        const storedResetDate = localStorage.getItem(LAST_RESET_KEY);
+        const currentDate = getUtcDateString();
+       
+        if (storedResetDate !== currentDate) {
+            const now = new Date();
+            const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+            const utcHour = utcNow.getUTCHours();
+            console.log(utcHour)
+            if (utcHour === 10) {
+                // It's 12:00 AM UTC and not reset yet today
+                handleReset();
+            }
+        }
+    };
 
     useEffect(() => {
         const updateCountdown = () => {
             const now = new Date();
             const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
             const target = new Date(utcNow);
-            target.setUTCHours(17, 0, 0, 0); // Set to 5 PM UTC
+            target.setUTCHours(10, 49, 0, 0); // Set target to 12 AM UTC
 
-            // If current time is past 5 PM UTC, set target to next day
             if (utcNow.getTime() > target.getTime()) {
                 target.setDate(target.getDate() + 1);
             }
@@ -40,11 +77,23 @@ export default function DailyProgress() {
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            setCountdown({ days, hours, minutes, seconds });
+            setCountdown(prev => {
+                if (
+                    prev.days === 0 &&
+                    prev.hours === 0 &&
+                    prev.minutes === 0 &&
+                    prev.seconds === 1 &&
+                    seconds === 0
+                ) {
+                    handleReset(); // Trigger API when countdown reaches 0
+                }
+                return { days, hours, minutes, seconds };
+            });
         };
 
+        const interval = setInterval(updateCountdown, 1000);
         updateCountdown();
-        const interval = setInterval(updateCountdown, 1000); // Update every second
+        checkAndReset(); // Check once on load
         return () => clearInterval(interval);
     }, []);
 
@@ -58,9 +107,9 @@ export default function DailyProgress() {
     return (
         <div className="bg-gray-900/50 rounded-xl p-4">
             <div className="flex justify-between items-center mb-2">
-                <div className="text-sm text-gray-400">  {t('navigation.dailyProgress')} </div>
+                <div className="text-sm text-gray-400">{t('navigation.dailyProgress')}</div>
                 <div className="text-sm text-emerald-400">
-                    {adsWatched}/{DAILY_AD_LIMIT}  {t('navigation.ads')}
+                    {adsWatched}/{DAILY_AD_LIMIT} {t('navigation.ads')}
                 </div>
             </div>
             <div className="h-2 bg-gray-700 rounded-full overflow-hidden mb-3">
@@ -75,7 +124,7 @@ export default function DailyProgress() {
                         Daily Limit Reached!
                     </div>
                 )}
-                <div className="flex justify-center gap-2  mt-5">
+                <div className="flex justify-center gap-2 mt-5">
                     {timeUnits.map((unit, index) => (
                         <div
                             key={unit.label}
@@ -84,10 +133,7 @@ export default function DailyProgress() {
                             <div className="text-lg font-bold text-amber-400">
                                 {unit.value.toString().padStart(2, '0')}
                             </div>
-                            <div className="text-xs text-gray-400"> {t('navigation.'+unit.label)}</div>
-                            {index < timeUnits.length - 1 && (
-                                <div className="absolute -right-1 top-1/2 -translate-y-1/2 text-gray-500">:</div>
-                            )}
+                            <div className="text-xs text-gray-400">{t('navigation.' + unit.label)}</div>
                         </div>
                     ))}
                 </div>

@@ -151,40 +151,6 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     }]
 });
 
-// Helper function to check if reset is needed
-userSchema.methods.shouldResetDaily = function(this: UserDocument): boolean {
-    if (!this.lastResetDate) return true;
-
-    const now = new Date();
-    const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-    const lastReset = new Date(this.lastResetDate);
-    const resetTime = new Date(utcNow);
-    resetTime.setUTCHours(17, 0, 0, 0); // 5 PM UTC
-
-    // If current time is before 5 PM UTC, check against previous day's 5 PM
-    if (utcNow < resetTime) {
-        resetTime.setDate(resetTime.getDate() - 1);
-    }
-
-    return lastReset < resetTime;
-};
-
-// Reset daily stats
-userSchema.methods.resetDaily = function(this: UserDocument): boolean {
-    if (this.shouldResetDaily()) {
-        this.adsWatched = 0;
-        this.lastResetDate = new Date();
-        return true;
-    }
-    return false;
-};
-
-// Middleware to check and reset daily limits before save
-userSchema.pre('save', function(this: UserDocument, next) {
-    this.resetDaily();
-    next();
-});
-
 // Middleware to ensure username is set from fullName if not provided
 userSchema.pre('save', function(this: UserDocument, next) {
     if (!this.username && this.fullName) {
