@@ -28,11 +28,11 @@ export default function DailyProgress() {
 
 
     const handleReset = async () => {
-        
+
         localStorage.setItem(LAST_RESET_KEY, getUtcDateString());
         try {
-           const res = await API_CALL({  url : 'reset-daily' , method : 'POST' })
-           
+            const res = await API_CALL({ url: 'reset-daily', method: 'POST' })
+
             console.log('Reset API response:', res.response?.message);
             toast.success(res.response?.message as string)
             // Optionally, refresh Redux state or UI
@@ -43,17 +43,25 @@ export default function DailyProgress() {
         }
     };
 
-    
+
     const checkAndReset = () => {
         const storedResetDate = localStorage.getItem(LAST_RESET_KEY);
         const currentDate = getUtcDateString();
-       
+
         if (storedResetDate !== currentDate) {
             const now = new Date();
             const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
             const utcHour = utcNow.getUTCHours();
             console.log(utcHour)
-            if (utcHour === 11) {
+
+
+
+
+
+
+            //  Set target to 12 AM UTC
+            
+            if (utcHour === 12) {
                 // It's 12:00 AM UTC and not reset yet today
                 handleReset();
             }
@@ -66,9 +74,17 @@ export default function DailyProgress() {
             const utcNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
             const target = new Date(utcNow);
 
-
-            target.setUTCHours(11, 5, 0, 0); //
+            target.setUTCHours(12, 0, 0, 0); //
             //  Set target to 12 AM UTC
+
+
+
+
+
+
+
+
+
 
             if (utcNow.getTime() > target.getTime()) {
                 target.setDate(target.getDate() + 1);
